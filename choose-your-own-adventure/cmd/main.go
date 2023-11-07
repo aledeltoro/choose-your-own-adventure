@@ -4,11 +4,10 @@ import (
 	"fmt"
 	"gophercises/choose-your-own-adventure/internal/handler"
 	"gophercises/choose-your-own-adventure/internal/models"
-	"html/template"
+	"gophercises/choose-your-own-adventure/internal/templating"
 	"log"
 	"net/http"
 	"os"
-	"path/filepath"
 )
 
 func main() {
@@ -26,22 +25,9 @@ func main() {
 	fs := http.FileServer(http.Dir("assets/"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
-	layoutFiles, err := filepath.Glob("templates/layout/" + "*.html")
+	templates, err := templating.LoadTemplates()
 	if err != nil {
 		log.Fatalln(err)
-	}
-
-	pageFiles, err := filepath.Glob("templates/" + "*.html")
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	templates := make(map[string]*template.Template)
-
-	for _, file := range pageFiles {
-		filename := filepath.Base(file)
-		files := append(layoutFiles, file)
-		templates[filename] = template.Must(template.ParseFiles(files...))
 	}
 
 	handler := handler.NewHandler(templates, input)
