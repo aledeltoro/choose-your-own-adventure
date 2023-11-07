@@ -8,11 +8,12 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
 )
 
 func main() {
 	// Change the current working directory to be consistent, regardless of where the program is run
-	data, err := os.ReadFile("../gopher.json")
+	data, err := os.ReadFile("gopher.json")
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -22,9 +23,28 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	tmpl := template.Must(template.ParseFiles("../assets/html/base.html"))
+	fs := http.FileServer(http.Dir("assets/"))
+	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
-	handler := handler.NewHandler(tmpl, input)
+	layoutFiles, err := filepath.Glob("templates/layout/" + "*.html")
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	pageFiles, err := filepath.Glob("templates/" + "*.html")
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	templates := make(map[string]*template.Template)
+
+	for _, file := range pageFiles {
+		filename := filepath.Base(file)
+		files := append(layoutFiles, file)
+		templates[filename] = template.Must(template.ParseFiles(files...))
+	}
+
+	handler := handler.NewHandler(templates, input)
 
 	http.HandleFunc("/cyoa/", handler.HandleRenderStory())
 

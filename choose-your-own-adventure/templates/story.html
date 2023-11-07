@@ -1,0 +1,21 @@
+{{define "title"}}
+  {{.Title}}
+{{end}}
+
+{{define "content"}}
+  {{range .Story}}
+    <p>{{.}}</p>
+  {{end}}
+
+  {{if .Options}}
+    <hr>
+
+    <ul>
+      {{range .Options}}
+        <li>
+          <a href="http://localhost:8080/cyoa/{{.Arc}}">{{.Text}}</a>
+        </li>
+      {{end}}
+    </ul>
+  {{end}}
+{{end}}
