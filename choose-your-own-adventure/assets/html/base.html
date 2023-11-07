@@ -12,16 +12,19 @@
     {{range .Story}}
       <p>{{.}}</p>
     {{end}}
+    
+    {{if .Options}}
+      <hr>
 
-    <hr>
+      <ul>
+        {{range .Options}}
+          <li>
+            <a href="http://localhost:8080/cyoa/{{.Arc}}">{{.Text}}</a>
+          </li>
+        {{end}}
+      </ul>
+    {{end}}
 
-    <ul>
-      {{range .Options}}
-        <li>
-          <a href="http://localhost:8080/cyoa/{{.Arc}}">{{.Text}}</a>
-        </li>
-      {{end}}
-    </ul>
 
   </div> 
 </body>

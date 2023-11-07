@@ -2,7 +2,8 @@ package models
 
 import "encoding/json"
 
-type adventureInput struct {
+// AdventureInput input of the story and its options
+type AdventureInput struct {
 	Title   string   `json:"title"`
 	Story   []string `json:"story"`
 	Options []option `json:"options"`
@@ -13,8 +14,9 @@ type option struct {
 	Arc  string `json:"arc"`
 }
 
-func NewAdventureInput(data []byte) (map[string]adventureInput, error) {
-	var input map[string]adventureInput
+// NewAdventureInput parses input of the story and its options
+func NewAdventureInput(data []byte) (map[string]AdventureInput, error) {
+	var input map[string]AdventureInput
 
 	err := json.Unmarshal(data, &input)
 	if err != nil {
