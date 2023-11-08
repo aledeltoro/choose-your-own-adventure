@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"gophercises/choose-your-own-adventure/internal/handler"
 	"gophercises/choose-your-own-adventure/internal/models"
 	"gophercises/choose-your-own-adventure/internal/templating"
@@ -11,7 +10,6 @@ import (
 )
 
 func main() {
-	// Change the current working directory to be consistent, regardless of where the program is run
 	data, err := os.ReadFile("gopher.json")
 	if err != nil {
 		log.Fatalln(err)
@@ -33,10 +31,6 @@ func main() {
 	handler := handler.NewHandler(templates, input)
 
 	http.HandleFunc("/cyoa/", handler.HandleRenderStory())
-
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, "hello world")
-	})
 
 	log.Println("listening to port :8080")
 
