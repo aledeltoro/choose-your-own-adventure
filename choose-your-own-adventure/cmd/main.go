@@ -3,6 +3,7 @@ package main
 import (
 	"gophercises/choose-your-own-adventure/internal/handler"
 	"gophercises/choose-your-own-adventure/internal/models"
+	"gophercises/choose-your-own-adventure/internal/service"
 	"gophercises/choose-your-own-adventure/internal/templating"
 	"log"
 	"net/http"
@@ -10,7 +11,7 @@ import (
 )
 
 func main() {
-	data, err := os.ReadFile("gopher.json")
+	data, err := os.ReadFile("assets/gopher.json")
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -28,7 +29,9 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	handler := handler.NewHandler(templates, input)
+	service := service.NewStoryService(templates, input)
+
+	handler := handler.NewHandler(service)
 
 	http.HandleFunc("/cyoa/", handler.HandleRenderStory())
 

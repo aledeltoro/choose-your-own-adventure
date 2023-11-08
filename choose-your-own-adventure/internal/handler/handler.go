@@ -1,9 +1,8 @@
 package handler
 
 import (
-	"gophercises/choose-your-own-adventure/internal/models"
+	"gophercises/choose-your-own-adventure/internal/service"
 	"gophercises/choose-your-own-adventure/internal/templating"
-	"html/template"
 	"net/http"
 	"strings"
 )
@@ -14,15 +13,13 @@ type Handler interface {
 }
 
 type handler struct {
-	templates map[string]*template.Template
-	input     map[string]models.AdventureInput
+	service service.StoryService
 }
 
 // NewHandler creates a handler instance
-func NewHandler(templates map[string]*template.Template, input map[string]models.AdventureInput) Handler {
+func NewHandler(service service.StoryService) Handler {
 	return handler{
-		templates: templates,
-		input:     input,
+		service: service,
 	}
 }
 
@@ -31,17 +28,8 @@ func (h handler) HandleRenderStory() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		currentStory := strings.ReplaceAll(r.URL.Path, "/cyoa/", "")
 
-		if currentStory == "" {
-			templating.RenderTemplate(w, h.templates["story.html"], h.input["intro"])
-			return
-		}
+		tmpl, input := h.service.GetStory(currentStory)
 
-		nextStory, ok := h.input[currentStory]
-		if !ok {
-			templating.RenderTemplate(w, h.templates["not_found.html"], nil)
-			return
-		}
-
-		templating.RenderTemplate(w, h.templates["story.html"], nextStory)
+		templating.RenderTemplate(w, tmpl, input)
 	}
 }

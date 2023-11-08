@@ -15,8 +15,8 @@ type option struct {
 }
 
 // NewAdventureInput parses input of the story and its options
-func NewAdventureInput(data []byte) (map[string]AdventureInput, error) {
-	var input map[string]AdventureInput
+func NewAdventureInput(data []byte) (map[string]*AdventureInput, error) {
+	var input map[string]*AdventureInput
 
 	err := json.Unmarshal(data, &input)
 	if err != nil {
