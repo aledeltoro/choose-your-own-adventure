@@ -3,6 +3,8 @@ package templating
 import (
 	"fmt"
 	"html/template"
+	"log"
+	"net/http"
 	"path/filepath"
 )
 
@@ -10,6 +12,15 @@ const (
 	templateLayoutsPath = "templates/layout/*.html"
 	templatesPath       = "templates/*.html"
 )
+
+// RenderTemplate renders a HTML page
+func RenderTemplate(w http.ResponseWriter, tmpl *template.Template, data interface{}) {
+	err := tmpl.ExecuteTemplate(w, "base", data)
+	if err != nil {
+		http.Error(w, "Unexpected server error", 500)
+		log.Println("executing template failed: %w", err)
+	}
+}
 
 // LoadTemplates loads layout and page files
 func LoadTemplates() (map[string]*template.Template, error) {

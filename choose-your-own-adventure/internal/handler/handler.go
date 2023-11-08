@@ -1,10 +1,9 @@
 package handler
 
 import (
-	"fmt"
 	"gophercises/choose-your-own-adventure/internal/models"
+	"gophercises/choose-your-own-adventure/internal/templating"
 	"html/template"
-	"log"
 	"net/http"
 	"strings"
 )
@@ -32,36 +31,17 @@ func (h handler) HandleRenderStory() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		currentStory := strings.ReplaceAll(r.URL.Path, "/cyoa/", "")
 
-		var err error
-
 		if currentStory == "" {
-			err = h.templates["story.html"].ExecuteTemplate(w, "base", h.input["intro"])
-			if err != nil {
-				// Respond with error message to page
-				log.Println("executing template failed: ", err)
-				fmt.Fprintln(w, "Unexpected error")
-				return
-			}
-
+			templating.RenderTemplate(w, h.templates["story.html"], h.input["intro"])
 			return
 		}
-
-		// STRUCTURE THE HTML BETTER THEN ADD CSS
 
 		nextStory, ok := h.input[currentStory]
 		if !ok {
-			// Response with 404
-			err := h.templates["not_found.html"].ExecuteTemplate(w, "base", nil)
-			if err != nil {
-				fmt.Println(err)
-			}
+			templating.RenderTemplate(w, h.templates["not_found.html"], nil)
 			return
 		}
 
-		err = h.templates["story.html"].ExecuteTemplate(w, "base", nextStory)
-		if err != nil {
-			log.Println("executing template failed: ", err)
-			fmt.Fprintln(w, "Unexpected error")
-		}
+		templating.RenderTemplate(w, h.templates["story.html"], nextStory)
 	}
 }
