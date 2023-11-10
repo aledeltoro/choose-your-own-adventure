@@ -1,6 +1,8 @@
 package main
 
 import (
+	"flag"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -12,6 +14,9 @@ import (
 )
 
 func main() {
+	port := flag.Int("port", 8080, "Port for the cyoa server to run on")
+	flag.Parse()
+
 	data, err := os.ReadFile("assets/gopher.json")
 	if err != nil {
 		log.Fatalln(err)
@@ -36,7 +41,7 @@ func main() {
 
 	http.HandleFunc("/cyoa/", handler.HandleRenderStory())
 
-	log.Println("listening to port :8080")
+	log.Printf("listening to port :%d\n", *port)
 
-	log.Fatalln(http.ListenAndServe(":8080", nil))
+	log.Fatalln(http.ListenAndServe(fmt.Sprintf(":%d", *port), nil))
 }

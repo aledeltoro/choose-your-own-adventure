@@ -45,7 +45,9 @@ func TestHandlerRenderStory(t *testing.T) {
 
 	resp := w.Result()
 
-	defer resp.Body.Close()
+	defer func() {
+		_ = resp.Body.Close()
+	}()
 
 	data, err := io.ReadAll(resp.Body)
 	c.NoError(err)
@@ -83,7 +85,9 @@ func TestHandlerRenderStoryChapterNotFound(t *testing.T) {
 
 	resp := w.Result()
 
-	defer resp.Body.Close()
+	defer func() {
+		_ = resp.Body.Close()
+	}()
 
 	data, err := io.ReadAll(resp.Body)
 	c.NoError(err)
