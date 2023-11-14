@@ -1,9 +1,10 @@
 package service
 
 import (
-	"gophercises/choose-your-own-adventure/internal/models"
 	"html/template"
 	"testing"
+
+	"github.com/aledeltoro/choose-your-own-adventure/internal/models"
 
 	"github.com/stretchr/testify/require"
 )

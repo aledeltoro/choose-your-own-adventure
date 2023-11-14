@@ -1,10 +1,11 @@
 package handler
 
 import (
-	"gophercises/choose-your-own-adventure/internal/service"
-	"gophercises/choose-your-own-adventure/internal/templating"
 	"net/http"
 	"strings"
+
+	"github.com/aledeltoro/choose-your-own-adventure/internal/service"
+	"github.com/aledeltoro/choose-your-own-adventure/internal/templating"
 )
 
 // Handler represents the interface to handle the adventure story rendering

@@ -1,13 +1,14 @@
 package main
 
 import (
-	"gophercises/choose-your-own-adventure/internal/handler"
-	"gophercises/choose-your-own-adventure/internal/models"
-	"gophercises/choose-your-own-adventure/internal/service"
-	"gophercises/choose-your-own-adventure/internal/templating"
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/aledeltoro/choose-your-own-adventure/internal/handler"
+	"github.com/aledeltoro/choose-your-own-adventure/internal/models"
+	"github.com/aledeltoro/choose-your-own-adventure/internal/service"
+	"github.com/aledeltoro/choose-your-own-adventure/internal/templating"
 )
 
 func main() {

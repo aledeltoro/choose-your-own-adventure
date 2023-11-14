@@ -1,8 +1,9 @@
 package service
 
 import (
-	"gophercises/choose-your-own-adventure/internal/models"
 	"html/template"
+
+	"github.com/aledeltoro/choose-your-own-adventure/internal/models"
 )
 
 // StoryService service to handle story rendering
